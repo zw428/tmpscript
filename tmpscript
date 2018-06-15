@@ -1,0 +1,20 @@
+#!/bin/bash
+
+tmp_file=$(mktemp)
+
+for i in $*; do
+	echo $i >> $tmp_file
+done
+
+orig_input=$(cat $tmp_file)
+
+$EDITOR $tmp_file
+
+if [[ $orig_input == $(cat $tmp_file) ]]; then
+	echo "No changes made, exiting"
+	exit
+fi
+
+source $tmp_file
+
+rm $tmp_file
